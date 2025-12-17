@@ -68,6 +68,8 @@ export interface HeroVideoSection {
     documentId: string;
     title: string;
     Video: StrapiVideo;
+    /** Optional thumbnail image for the video (may be provided by Strapi) */
+    thumbnail?: StrapiImage;
   };
 }
 
