@@ -234,7 +234,7 @@ export interface MembersSection {
   board_members: BoardMember[];
 }
 
-export type PageSection = DepartmentSection | FAQsSection | MembersSection;
+export type PageSection = DepartmentSection | FAQsSection | MembersSection | DownloadsSection;
 
 export interface PageData {
   id: number;
@@ -278,4 +278,40 @@ export interface FooterData {
   links: FooterLink[];
   numbers: FooterNumber[];
   info: FooterInfo;
+}
+
+export interface DownloadFile {
+  id: number;
+  documentId: string;
+  name: string;
+  alternativeText: string | null;
+  caption: string | null;
+  width: number | null;
+  height: number | null;
+  formats: any | null;
+  hash: string;
+  ext: string;
+  mime: string;
+  size: number;
+  url: string;
+  previewUrl: string | null;
+  provider: string;
+  provider_metadata: any | null;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
+
+export interface DownloadItem {
+  id: number;
+  documentId: string;
+  title: string;
+  slug: string;
+  download: DownloadFile;
+}
+
+export interface DownloadsSection {
+  __component: "page.downloads";
+  id: number;
+  downloads: DownloadItem[];
 }

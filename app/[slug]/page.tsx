@@ -4,7 +4,13 @@ import Footer from "@/components/layout/Footer";
 import Department from "@/components/sections/Department";
 import FAQs from "@/components/sections/FAQs";
 import Members from "@/components/sections/Members";
-import { DepartmentSection, FAQsSection, MembersSection } from "@/lib/types";
+import Downloads from "@/components/sections/Downloads";
+import {
+  DepartmentSection,
+  FAQsSection,
+  MembersSection,
+  DownloadsSection,
+} from "@/lib/types";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 
@@ -50,6 +56,14 @@ export default async function Page({
                 <Members
                   key={`${section.__component}-${index}`}
                   data={section as MembersSection}
+                />
+              );
+            case "page.downloads":
+              return (
+                <Downloads
+                  key={`${section.__component}-${index}`}
+                  data={section as DownloadsSection}
+                  locale={locale}
                 />
               );
             default:
