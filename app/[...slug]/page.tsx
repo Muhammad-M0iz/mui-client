@@ -5,11 +5,15 @@ import Department from "@/components/sections/Department";
 import FAQs from "@/components/sections/FAQs";
 import Members from "@/components/sections/Members";
 import Downloads from "@/components/sections/Downloads";
+import Content from "@/components/sections/Content";
+import List from "@/components/sections/List";
 import {
   DepartmentSection,
   FAQsSection,
   MembersSection,
   DownloadsSection,
+  ContentSection,
+  ListSection,
 } from "@/lib/types";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
@@ -17,12 +21,16 @@ import { cookies } from "next/headers";
 export default async function Page({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string[] }>;
 }) {
-  const { slug } = await params;
+  const { slug: slugArray } = await params;
+
+  // Use the last segment of the slug array for the API call.
+  const effectiveSlug = slugArray[slugArray.length - 1];
+
   const cookieStore = await cookies();
   const locale = cookieStore.get("locale")?.value || "ur";
-  const pageData = await getPageData(slug, locale);
+  const pageData = await getPageData(effectiveSlug, locale);
 
   if (!pageData) {
     notFound();
@@ -64,6 +72,20 @@ export default async function Page({
                   key={`${section.__component}-${index}`}
                   data={section as DownloadsSection}
                   locale={locale}
+                />
+              );
+            case "page.content":
+              return (
+                <Content
+                  key={`${section.__component}-${index}`}
+                  data={section as ContentSection}
+                />
+              );
+            case "page.list":
+              return (
+                <List
+                  key={`${section.__component}-${index}`}
+                  data={section as ListSection}
                 />
               );
             default:

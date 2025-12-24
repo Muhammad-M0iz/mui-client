@@ -234,7 +234,25 @@ export interface MembersSection {
   board_members: BoardMember[];
 }
 
-export type PageSection = DepartmentSection | FAQsSection | MembersSection | DownloadsSection;
+export interface ContentSection {
+  __component: "page.content";
+  id: number;
+  Content: any[];
+}
+
+export interface ListItem {
+  id: number;
+  title: string;
+}
+
+export interface ListSection {
+  __component: "page.list";
+  id: number;
+  Heading: string;
+  List: ListItem[];
+}
+
+export type PageSection = DepartmentSection | FAQsSection | MembersSection | DownloadsSection | ContentSection | ListSection;
 
 export interface PageData {
   id: number;
