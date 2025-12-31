@@ -249,10 +249,48 @@ export interface ListSection {
   __component: "page.list";
   id: number;
   Heading: string;
-  List: ListItem[];
+  List: {
+    id: number;
+    title: string;
+  }[];
 }
 
-export type PageSection = DepartmentSection | FAQsSection | MembersSection | DownloadsSection | ContentSection | ListSection;
+export interface TableSection {
+  __component: "page.table";
+  id: number;
+  title: string | null;
+  Table: {
+    rows: string[][];
+    columns: {
+      type: string;
+      label: string;
+      required: boolean;
+    }[];
+  };
+}
+
+export interface GridSection {
+  __component: "page.grid";
+  id: number;
+  Heading: string;
+  Columns: "one" | "two" | "three" | "four";
+  Cards: {
+    id: number;
+    title: string;
+    Description: string;
+    icon: StrapiImage;
+  }[];
+}
+
+export type PageSection =
+  | DepartmentSection
+  | FAQsSection
+  | MembersSection
+  | DownloadsSection
+  | ContentSection
+  | ListSection
+  | TableSection
+  | GridSection;
 
 export interface PageData {
   id: number;

@@ -10,6 +10,7 @@ export const translations = {
     follow_facebook: "Follow us on Facebook",
     like_page: "Like Page",
     no_image: "No image available",
+    page_not_available: "The requested page is not available in this language.",
   },
   ur: {
     announcements: "اعلانات",
@@ -22,6 +23,7 @@ export const translations = {
     follow_facebook: "ہمیں فیس بک پر فالو کریں",
     like_page: "پیج لائک کریں",
     no_image: "کوئی تصویر دستیاب نہیں",
+    page_not_available: "مطلوبہ صفحہ اس زبان میں دستیاب نہیں ہے۔",
   },
 };
 

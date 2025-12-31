@@ -4,17 +4,26 @@ import Image from "next/image";
 import LocaleSwitcher from "./LocaleSwitcher";
 import { cookies } from "next/headers";
 
-export default async function Header() {
+interface HeaderProps {
+  locale?: string;
+}
+
+export default async function Header({ locale: propLocale }: HeaderProps) {
   const cookieStore = await cookies();
-  const locale = cookieStore.get("locale")?.value || "ur";
+  const cookieLocale = cookieStore.get("locale")?.value || "ur";
+  
+  // Use the passed locale (from fallback logic) or the cookie locale
+  const locale = propLocale || cookieLocale;
   const dir = locale === "ur" ? "rtl" : "ltr";
+  
+  // Fetch navigation based on the effective locale
   const navigationItems = await getNavigation(locale);
 
   return (
     <header className="bg-white dark:bg-[#1a2230] shadow-sm border-b border-gray-100 dark:border-gray-800">
       <div className="container mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center text-sm text-gray-600 dark:text-gray-400 gap-4">
         <div className="flex items-center gap-6">
-          <LocaleSwitcher />
+          <LocaleSwitcher currentLocale={locale} />
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-primary text-lg">
               phone

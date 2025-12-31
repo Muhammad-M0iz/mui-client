@@ -19,6 +19,8 @@ export const metadata: Metadata = {
 };
 
 import { cookies } from "next/headers";
+import ToastHandler from "@/components/ToastHandler";
+import { Suspense } from "react";
 
 export default async function RootLayout({
   children,
@@ -27,11 +29,16 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
   const locale = cookieStore.get("locale")?.value || "ur";
+  
+  // We'll handle the direction and lang attribute in a client-side wrapper 
+  // or keep it static if we want to avoid the "style jump" during fallback.
+  // For now, let's ensure the body has the correct font and direction.
   const dir = locale === "ur" ? "rtl" : "ltr";
 
   return (
-    <html lang={locale} dir={dir}>
+    <html lang={locale} dir={dir} className="scroll-smooth">
       <head>
+        {/* ... existing head content ... */}
         <link
           href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
@@ -55,6 +62,9 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased font-display`}
       >
+        <Suspense fallback={null}>
+          <ToastHandler locale={locale} />
+        </Suspense>
         {children}
       </body>
     </html>

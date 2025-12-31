@@ -64,10 +64,10 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col min-h-screen overflow-x-hidden bg-background-light dark:bg-background-dark text-[#0d121b] dark:text-white font-display">
-      <Header />
+      <Header locale={locale} />
 
       <main className="flex-1">
-        {/* Hero & Important Links Section */}
+        {/* Hero Section */}
         <section className="px-6 lg:px-40 py-12 bg-white dark:bg-[#1a2230]">
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
             <div className="lg:col-span-8 flex flex-col gap-6">

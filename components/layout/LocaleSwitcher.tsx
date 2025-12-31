@@ -1,39 +1,51 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
 
-export default function LocaleSwitcher() {
+export default function LocaleSwitcher({ currentLocale }: { currentLocale?: string }) {
   const router = useRouter();
-  const [locale, setLocale] = useState("ur");
+  const [locale, setLocale] = useState(currentLocale || "ur");
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    const match = document.cookie.match(new RegExp("(^| )locale=([^;]+)"));
-    if (match) {
-      setLocale(match[2]);
+    if (currentLocale) {
+      setLocale(currentLocale);
+    } else {
+      const match = document.cookie.match(new RegExp("(^| )locale=([^;]+)"));
+      if (match) {
+        setLocale(match[2]);
+      }
     }
-  }, []);
+  }, [currentLocale]);
 
   const switchLocale = (newLocale: string) => {
+    // Always set the cookie and refresh, even if the visual locale is the same.
+    // This handles the case where we are in fallback mode (visual=ur, cookie=en)
+    // and the user clicks "ur" to confirm they want Urdu preference.
     document.cookie = `locale=${newLocale}; path=/; max-age=31536000`; // 1 year
-    setLocale(newLocale);
-    router.refresh();
+    
+    startTransition(() => {
+      router.refresh();
+    });
   };
 
   return (
-    <div className="flex gap-2 text-sm">
+    <div className={`flex gap-2 text-sm ${isPending ? "opacity-70 pointer-events-none" : ""}`}>
       <button
         onClick={() => switchLocale("ur")}
-        className={`px-2 py-1 rounded ${
-          locale === "ur" ? "bg-primary text-white" : "bg-gray-200 text-gray-700"
+        disabled={isPending}
+        className={`px-2 py-1 rounded transition-colors ${
+          locale === "ur" ? "bg-primary text-white" : "bg-gray-200 text-gray-700 hover:bg-gray-300"
         }`}
       >
         اردو
       </button>
       <button
         onClick={() => switchLocale("en")}
-        className={`px-2 py-1 rounded ${
-          locale === "en" ? "bg-primary text-white" : "bg-gray-200 text-gray-700"
+        disabled={isPending}
+        className={`px-2 py-1 rounded transition-colors ${
+          locale === "en" ? "bg-primary text-white" : "bg-gray-200 text-gray-700 hover:bg-gray-300"
         }`}
       >
         English
